@@ -1,11 +1,6 @@
-
-
-
-
-
 window.addEventListener("load", () => {
-    let partidas = pegaPartidas();
-    listaPartidas(partidas);
+    //let partidas = pegaPartidas();
+    //listaPartidas(partidas);
     
 })
 
@@ -15,6 +10,7 @@ class partida {
             this.local = local;
             this.data = data;
             this.hora = hora;
+            this.jogadores = [];
         }
     }
 
@@ -33,7 +29,12 @@ addBtn.addEventListener("click", () => {
     console.log(titulo);
     console.log("partida criada");
     console.log(novaPartida);
-    adicionaPartida(novaPartida);
+    fetch('/criarpartida', {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(novaPartida)
+    })
+
 
 
 });
