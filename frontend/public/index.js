@@ -57,7 +57,7 @@ const listaPartidas = () => {
             novoTr.appendChild(tdNovaAcao)
             PartidaBtn.addEventListener("click", () => {
                 console.log(element)
-                window.location.replace('partida.html?id=teste')
+                window.location.replace(`partida.html?id=${element.id}`)
             })
         });
 
