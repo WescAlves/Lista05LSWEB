@@ -1,5 +1,3 @@
-
-
 window.addEventListener("load", () => {
         listaPartidas()
     
@@ -49,15 +47,18 @@ const listaPartidas = () => {
             const tdnovoHora = document.createElement("td")
             tdnovoHora.textContent = element.hora
             const tdNovaAcao = document.createElement("td")
-            const RemBtn = document.createElement("button")
-            RemBtn.textContent = 'Remover'
-            tdNovaAcao.appendChild(RemBtn);
+            const PartidaBtn = document.createElement("button")
+            PartidaBtn.textContent = 'Acessar'
+            tdNovaAcao.appendChild(PartidaBtn);
             novoTr.appendChild(tdnovoNome)
             novoTr.appendChild(tdnovoLocal)
             novoTr.appendChild(tdnovoData)
             novoTr.appendChild(tdnovoHora)
             novoTr.appendChild(tdNovaAcao)
-            
+            PartidaBtn.addEventListener("click", () => {
+                console.log(element)
+                window.location.replace('partida.html?id=teste')
+            })
         });
 
     })
@@ -65,15 +66,6 @@ const listaPartidas = () => {
 
 }
 
-class partida {
-        constructor(titulo, local, data, hora) {
-            this.titulo = titulo;
-            this.local = local;
-            this.data = data;
-            this.hora = hora;
-            this.jogadores = [];
-        }
-    }
 
 const inputtitulo = document.querySelector("#tituloPartida");
 const inputlocal = document.querySelector("#localPartida");
@@ -86,16 +78,15 @@ addBtn.addEventListener("click", () => {
     let local = inputlocal.value;
     let data = inputdata.value;
     let hora = inputhora.value;
-    let novaPartida = new partida(titulo, local, data, hora);
-    console.log(titulo);
+    let dados = {title: titulo, loc: local, date: data, hour: hora}
+    console.log(dados);
     console.log("partida criada");
-    console.log(novaPartida);
     fetch('/criarpartida', {
         method: "POST",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(novaPartida)
+        headers:  {'Content-Type': 'application/json'},
+        body: JSON.stringify(dados),
     })
-    listaPartidas()
+    .then(listaPartidas)
 
 
 
