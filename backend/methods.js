@@ -126,5 +126,79 @@ const pegaPartidas = (req, res) => {
     })
 }
 
+const deletaJogador = (req, res) => {
+    console.log("Entrou para deletar")
+    const idPart = req.params.idpart
+    const idJog = req.params.idjog
+    fs.readFile(db, (err, content) => {
+        console.log("Entrou no fs")
+        if(err){
+            console.log("erro")
+        }
+        else {
+            if(content) {
+                let fileContent = JSON.parse(content)
+                fileContent.forEach(match => {
+                    if(match.id === idPart){
+                        let listaPlayers = match.jogadores
+                        listaPlayers.forEach(player => {
+                            if(idJog === player.id){
+                                let jogDel = player.id
+                                let index = match.jogadores.findIndex(obj => obj.id === jogDel)
+                                match.jogadores.splice(index, 1);
+                                fs.writeFile(db, JSON.stringify(fileContent), (err) => {
+                                    if(!err){
+                                        res.json({
+                                            status: "OK"
+                                        });
+                                    }
+                                })
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    })
+}
 
-export {adicionaPartida, pegaPartidas, adicionaJogador};
+const mudarPresenca = (req, res) => {
+    const idPart = req.params.idpart
+    const idJog = req.params.idjog
+    fs.readFile(db, (err, content) => {
+        console.log("Entrou no fs")
+        if(err){
+            console.log("erro")
+        }
+        else {
+            if(content) {
+                let fileContent = JSON.parse(content)
+                fileContent.forEach(match => {
+                    if(match.id === idPart){
+                        console.log("deu bom")
+                        match.jogadores.forEach(player => {
+                            if(player.id === idJog){
+                                console.log("teste")
+                                if(player.pres === true){
+                                    player.pres = false
+                                }
+                                else{
+                                    player.pres = true
+                                }
+                            }
+                            fs.writeFile(db, JSON.stringify(fileContent), (err) => {
+                                if(!err){
+                                    res.json({
+                                        status: "OK"
+                                    });
+                                }
+                            })
+                        });
+                    }                    
+                });
+            }
+        }
+    })
+}    
+
+export {adicionaPartida, pegaPartidas, adicionaJogador, deletaJogador, mudarPresenca};

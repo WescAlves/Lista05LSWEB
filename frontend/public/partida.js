@@ -53,9 +53,23 @@ let listaJogadores = () => {
                     novoTr.appendChild(tdAcao);
                     tdPres.appendChild(checkbox)
                     tdAcao.appendChild(RemBtn);
+                    checkbox.checked = player.pres
+                    checkbox.addEventListener("click", () => {
+                            console.log(element.id)
+                            console.log(player.id)
+                            fetch(`/presencajogador/${element.id}/${player.id}`, {
+                                method:"PATCH",
+                            })  
+                            .then(listaJogadores)
+                    })
 
                     RemBtn.addEventListener("click", () => {
-                        //TODO
+                        console.log(element.id)
+                        console.log(player.id)
+                        fetch(`/removejogador/${element.id}/${player.id}`, {
+                            method: "DELETE",
+                        })
+                        .then(listaJogadores)
                     })
                 });
                 
@@ -78,7 +92,7 @@ addBtn.addEventListener("click", () => {
     let id = url[1];
     let dados = {name: nome, cel: tel, di: id}
     console.log(dados)
-    fetch('/criarjogador', {
+    fetch(`/criarjogador`, {
         method: "POST",
         headers:  {'Content-Type': 'application/json'},
         body: JSON.stringify(dados),
