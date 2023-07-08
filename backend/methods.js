@@ -14,11 +14,63 @@ class partida {
     }
 }
 
+class jogador {
+    constructor(nome, tel, id) {
+        this.nome = nome;
+        this.tel = tel;
+        this.pres = false;
+        this.id = id
+    }
+}
+
+
+const adicionaJogador = (req, res) => {
+    console.log(req.body)
+    let nomeJogador = req.body.name;
+    let telJogador = req.body.cel;
+    let novoJogador = new jogador(nomeJogador, telJogador, id)
+    console.log(novoJogador)
+    fs.readFile(db, (err, content) => {
+        if(err){
+            console.log("erro")
+        }
+        else {
+            if(content) {
+                let idPart = req.body.di;
+                //console.log(idPart)
+                let fileContent = JSON.parse(content)
+                //console.log(fileContent)
+                fileContent.forEach(element => {
+                    console.log(element.id)
+                    if(element.id === idPart){
+                        console.log(element.titulo)
+                        console.log("Entrou o if e acho o id")
+                        element.jogadores.push(novoJogador)
+                        console.log(element.jogadores)
+                    }
+
+                });
+                fs.writeFile(db, JSON.stringify(fileContent), (err) => {
+                    if(!err){
+                        res.json({
+                            status: "OK"
+                        });
+                    }
+                })
+            }
+            
+        }
+})}
+
+
+
+
+
+
+
 const adicionaPartida = (req, res) => { 
     console.log(req.body) 
     fs.readFile(db, (err, content) => {
-        //console.log(`Entrou e o body é ${req.body}`)
-        console.log("Entrou no RF")
         if(err){
             console.log("erro")
         }
@@ -75,4 +127,4 @@ const pegaPartidas = (req, res) => {
 }
 
 
-export {adicionaPartida, pegaPartidas};
+export {adicionaPartida, pegaPartidas, adicionaJogador};

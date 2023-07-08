@@ -1,5 +1,5 @@
 import express, { json } from "express"
-import {adicionaPartida, pegaPartidas} from "../backend/methods.js"
+import {adicionaJogador, adicionaPartida, pegaPartidas} from "../backend/methods.js"
 
 
 
@@ -15,6 +15,10 @@ app.listen(PORT, () => {
 
 app.post("/criarpartida", (req, res) => {
     adicionaPartida(req, res);
+})
+
+app.post("/criarjogador", (req, res) => {
+    adicionaJogador(req, res)
 })
 
 app.get("/pegapartidas", (req, res) => {

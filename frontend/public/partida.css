@@ -2,3 +2,10 @@
     justify-content: center;
     display: flex;
 }
+
+table{
+    border: solid 2px black;
+}
+table td{
+    border: solid 2px black;
+}
