@@ -201,4 +201,34 @@ const mudarPresenca = (req, res) => {
     })
 }    
 
-export {adicionaPartida, pegaPartidas, adicionaJogador, deletaJogador, mudarPresenca};
+const deletaPartida = (req, res) => {
+    let id = req.params.id
+    console.log(id)
+    fs.readFile(db, (err, content) => {
+        console.log("Entrou no fs")
+        if(err){
+            console.log("erro")
+        }
+        else {
+            if(content) {
+                let fileContent = JSON.parse(content)
+                fileContent.forEach(partida => {
+                    if(partida.id == id){
+                        let index = fileContent.findIndex(obj => obj.id === partida.id);
+                        fileContent.splice(index, 1);
+                        fs.writeFile(db, JSON.stringify(fileContent), (err) => {
+                            if(!err){
+                                res.json({
+                                    status: "OK"
+                                });
+                            }
+                        })
+                    }
+                });
+            }
+        }
+
+    })
+}
+
+export {adicionaPartida, pegaPartidas, adicionaJogador, deletaJogador, mudarPresenca, deletaPartida};

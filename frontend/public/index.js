@@ -15,7 +15,10 @@ const listaPartidas = () => {
         let lista = response
         const divMatches = document.querySelector("#partidas");
         divMatches.innerHTML = '';
-        divMatches.textContent = 'Partidas';
+        //divMatches.textContent = 'Partidas';
+        let titlePartidas = document.createElement("h1");
+        titlePartidas.textContent = 'Partidas'
+        divMatches.appendChild(titlePartidas)
         const table = document.createElement("table")
         divMatches.appendChild(table)
         const thead = document.createElement("tr")

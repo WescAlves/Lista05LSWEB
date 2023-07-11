@@ -1,5 +1,5 @@
 import express, { json } from "express"
-import {adicionaJogador, adicionaPartida, pegaPartidas, deletaJogador, mudarPresenca} from "../backend/methods.js"
+import {adicionaJogador, adicionaPartida, pegaPartidas, deletaJogador, mudarPresenca, deletaPartida} from "../backend/methods.js"
 
 
 
@@ -35,6 +35,12 @@ app.get("/pegapartida/:id", (req, res) => {
 app.patch("/presencajogador/:idpart/:idjog", (req, res) => {
     mudarPresenca(req, res)
 })
+
+app.delete("/deletapartida/:id", (req, res) => {
+    deletaPartida(req, res)
+
+})
+    
 
     
 

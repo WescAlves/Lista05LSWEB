@@ -18,7 +18,7 @@ let listaJogadores = () => {
     const tdprincipal = document.createElement("td");
     table.appendChild(thead);
     thead.appendChild(tdprincipal);
-    tdprincipal.textContent = 'Lista de jogadores!!!!'    
+    tdprincipal.textContent = 'Lista de jogadores'    
     fetch('/pegapartidas', {
     method: "GET",
     })
@@ -84,6 +84,11 @@ let listaJogadores = () => {
 const addBtn = document.querySelector("#addBtn")
 const inputNome = document.querySelector("#inputnome")
 const inputTel = document.querySelector("#inputtel")
+const DelBtn = document.querySelector("#exclui");
+const homeBtn = document.querySelector("#homeBtn")
+homeBtn.addEventListener("click", () => {
+    window.location.replace('http://localhost:3000');
+})
 addBtn.addEventListener("click", () => {
     let nome = inputNome.value
     let tel = inputTel.value
@@ -98,6 +103,18 @@ addBtn.addEventListener("click", () => {
         body: JSON.stringify(dados),
     })
     .then(listaJogadores)
+})
+
+DelBtn.addEventListener("click", () => {
+    let url = window.location.href;
+    url = url.split('?id=');
+    let id = url[1];
+    fetch(`/deletapartida/${id}`, {
+    method: "DELETE"
+    })
+    .then((
+        window.location.replace(`http://localhost:3000`)
+    ))
 })
 
 
