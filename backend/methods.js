@@ -1,7 +1,7 @@
+import { ifError } from 'assert';
 import fs from 'fs';
 import {v4 as uuidv4 } from 'uuid'
 const id = uuidv4()
-console.log(id)
 const db = "backend/matches.json";
 class partida {
     constructor(titulo, local, data, hora, id) {
@@ -25,11 +25,9 @@ class jogador {
 
 
 const adicionaJogador = (req, res) => {
-    console.log(req.body)
     let nomeJogador = req.body.name;
     let telJogador = req.body.cel;
     let novoJogador = new jogador(nomeJogador, telJogador, id)
-    console.log(novoJogador)
     fs.readFile(db, (err, content) => {
         if(err){
             console.log("erro")
@@ -37,16 +35,10 @@ const adicionaJogador = (req, res) => {
         else {
             if(content) {
                 let idPart = req.body.di;
-                //console.log(idPart)
                 let fileContent = JSON.parse(content)
-                //console.log(fileContent)
                 fileContent.forEach(element => {
-                    console.log(element.id)
                     if(element.id === idPart){
-                        console.log(element.titulo)
-                        console.log("Entrou o if e acho o id")
                         element.jogadores.push(novoJogador)
-                        console.log(element.jogadores)
                     }
 
                 });
@@ -69,7 +61,6 @@ const adicionaJogador = (req, res) => {
 
 
 const adicionaPartida = (req, res) => { 
-    console.log(req.body) 
     fs.readFile(db, (err, content) => {
         if(err){
             console.log("erro")
@@ -83,9 +74,7 @@ const adicionaPartida = (req, res) => {
                 let local = req.body.loc
                 let data = req.body.date
                 let hora = req.body.hour
-                console.log(titulo)
                 let novaPartida = new partida(titulo, local, data, hora, id)
-
                 fileJson.push(novaPartida)
                 fs.writeFile(db, JSON.stringify(fileJson), (err) => {
                     if(!err){
@@ -120,18 +109,15 @@ const pegaPartidas = (req, res) => {
             console.log("Erro ao ler partidas!!!");
         }
         else {
-            console.log(`Retornando ${partidas}`)
             res.json(JSON.parse(partidas))
         }
     })
 }
 
 const deletaJogador = (req, res) => {
-    console.log("Entrou para deletar")
     const idPart = req.params.idpart
     const idJog = req.params.idjog
     fs.readFile(db, (err, content) => {
-        console.log("Entrou no fs")
         if(err){
             console.log("erro")
         }
@@ -163,29 +149,22 @@ const deletaJogador = (req, res) => {
 }
 
 const mudarPresenca = (req, res) => {
-    const idPart = req.params.idpart
-    const idJog = req.params.idjog
     fs.readFile(db, (err, content) => {
-        console.log("Entrou no fs")
         if(err){
             console.log("erro")
         }
+
         else {
             if(content) {
+                const idPart = req.params.idpart;
+                const idJog = req.params.idjog;
                 let fileContent = JSON.parse(content)
                 fileContent.forEach(match => {
                     if(match.id === idPart){
-                        console.log("deu bom")
-                        match.jogadores.forEach(player => {
-                            if(player.id === idJog){
-                                console.log("teste")
-                                if(player.pres === true){
-                                    player.pres = false
-                                }
-                                else{
-                                    player.pres = true
-                                }
-                            }
+                        const jogadorPresenca = match.jogadores.findIndex(player => player.id === idJog);
+                        if (jogadorPresenca >= 0 ) {
+                            const jogador = match.jogadores[jogadorPresenca];
+                            jogador.pres = !jogador.pres;
                             fs.writeFile(db, JSON.stringify(fileContent), (err) => {
                                 if(!err){
                                     res.json({
@@ -193,19 +172,16 @@ const mudarPresenca = (req, res) => {
                                     });
                                 }
                             })
-                        });
-                    }                    
-                });
-            }
-        }
-    })
-}    
+                        }                        
+                        
+                        }});
+                    }}}
+    )}
+                    
 
 const deletaPartida = (req, res) => {
     let id = req.params.id
-    console.log(id)
     fs.readFile(db, (err, content) => {
-        console.log("Entrou no fs")
         if(err){
             console.log("erro")
         }
@@ -231,4 +207,4 @@ const deletaPartida = (req, res) => {
     })
 }
 
-export {adicionaPartida, pegaPartidas, adicionaJogador, deletaJogador, mudarPresenca, deletaPartida};
+export {adicionaPartida, pegaPartidas, adicionaJogador, deletaJogador, mudarPresenca, deletaPartida}

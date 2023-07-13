@@ -29,16 +29,13 @@ app.get("/pegapartidas", (req, res) => {
     pegaPartidas(req, res)  
 })
 
-app.get("/pegapartida/:id", (req, res) => {
-})
 
 app.patch("/presencajogador/:idpart/:idjog", (req, res) => {
-    mudarPresenca(req, res)
+    mudarPresenca(req, res);
 })
 
 app.delete("/deletapartida/:id", (req, res) => {
     deletaPartida(req, res)
-
 })
     
 
